@@ -22,18 +22,35 @@ class NetbillingClient {
     public function serviceCall() {
         
         try {
-            $client = new Client(
+            /*$client = new Client(
                 [
                     'headers' => [
-                        'Content-Type' => 'application/x-www-form-urlencoded'
+                        'User-Agent'=> 'MyDM3Client/Version:2010.Aug.20',
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                        'Content-Length' => 104
                     ]
                 ]
-        );
+            );
 
         $response = $client->request(
                 'POST', self::NETBILLING_URL, 
                 ['form_params' => $this->getValues()]
         );
+
+        return $response;*/
+            
+        $client = new Client(['base_uri' => 'http://secure.netbilling.com:1401']);
+        $response = $client->post('/gw/sas/direct3.2',[
+            'debug' => TRUE,
+            'form_params' => $this->getValues(),
+            [
+                'headers' => [
+                    'User-Agent'=> 'MyDM3Client/Version:2010.Aug.20',
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'Content-Length' => 104
+                ]
+            ]
+        ]);
 
         return $response;
         
